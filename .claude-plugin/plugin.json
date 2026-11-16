@@ -1,0 +1,9 @@
+{
+  "name": "skills-picker",
+  "version": "0.1.0",
+  "description": "Browse every installed skill by category in a side pane and insert it into the prompt. No tokens.",
+  "author": { "name": "hantunzawDev", "url": "https://github.com/hantunzawDev" },
+  "homepage": "https://github.com/hantunzawDev/skills-picker",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

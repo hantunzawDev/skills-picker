@@ -1,0 +1,11 @@
+{
+  "name": "skills-picker",
+  "owner": { "name": "hantunzawDev" },
+  "plugins": [
+    {
+      "name": "skills-picker",
+      "source": "./",
+      "description": "Browse every installed skill by category in a side pane and insert it into the prompt. No tokens."
+    }
+  ]
+}
