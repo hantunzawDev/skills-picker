@@ -18,6 +18,8 @@ const selected = atom({ plugin: 'skills-picker', key: 'selected' } as const, [] 
 
 // Bumped when a background scan changes the list; the render reads it, so a write redraws the pane.
 const version = atom({ plugin: 'skills-picker', key: 'version' } as const, 0, { shape: 'version-1' })
+// True while the Refresh button's rescan runs.
+const refreshing = atom({ plugin: 'skills-picker', key: 'refreshing' } as const, false, { shape: 'refreshing-1' })
 
 const toggle = <T,>(list: T[], item: T): T[] => (list.includes(item) ? list.filter(x => x !== item) : [...list, item])
 // Rows whose full description is shown.
@@ -79,6 +81,7 @@ export function registerPane(on: On): void {
     const open = await read($, expanded)
     const picked = await read($, selected)
     const shown = await read($, details)
+    const busy = await read($, refreshing)
     await read($, version)
     const cwd = await $.session.cwd()
 
@@ -174,6 +177,28 @@ export function registerPane(on: On): void {
               {searching ? `${matches.length} of ${all.length}` : `${all.length} skills`}
             </Text>
             {searching && <Button key="clear-search" plain dimColor label="Clear search" onPress={() => update($, query, () => '')} />}
+            <Button
+              key="refresh"
+              plain
+              dimColor
+              label={busy ? 'Refreshing…' : '↻ Refresh'}
+              onPress={async () => {
+                // No early return on a stale busy flag (a reload mid-scan would leave it set); scans are shared anyway.
+                await update($, refreshing, () => true)
+                try {
+                  const before = all.length
+                  const list = await refresh($, cwd, true)
+                  if (!list) $.ui.toast('Could not refresh the skills list.')
+                  else {
+                    const diff = list.length - before
+                    const change = diff === 0 ? 'no change' : diff > 0 ? `${diff} new` : `${-diff} gone`
+                    $.ui.toast(`Skills refreshed: ${list.length} skills (${change}).`)
+                  }
+                } finally {
+                  await update($, refreshing, () => false)
+                }
+              }}
+            />
           </Box>
         </Box>
 

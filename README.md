@@ -29,7 +29,7 @@ In the desktop app, where `/plugin` does not run: click **+** next to the prompt
 - Press a category to open or close it. Each skill shows its name, the plugin it comes from, and its first sentence; **Show more** reveals the full description.
 - **Add** picks a skill (it turns into **✓ Added**); press it again to drop it.
 - The tray at the top lists your picks. **Insert into prompt** types them at your cursor; **Clear** drops them all.
-- `/skills-picker refresh` rescans every skill folder. The list also refreshes by itself when skills are added, removed or edited.
+- **↻ Refresh** (beside the search box) rescans every skill folder, for when you have just installed skills or one is missing, and says how many are new or gone. `/skills-picker refresh` does the same. The list also refreshes by itself when skills are added, removed or edited.
 
 ## What it reads
 

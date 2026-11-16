@@ -23,6 +23,8 @@ declare module 'claude-code' {
       version: Shaped<number>
       /** The `invoke` of each skill whose full description is shown. */
       details: Shaped<string[]>
+      /** True while the pane's Refresh button rescans. */
+      refreshing: Shaped<boolean>
     }
   }
 }

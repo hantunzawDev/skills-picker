@@ -260,3 +260,15 @@ test('the search row shows the count, and Clear search empties the query', async
   expect(await ui.find({ type: 'Text', text: /^3 skills$/ })).toBeDefined()
   await ui.unmount()
 })
+
+test('the Refresh button rescans and reports the count by toast', async ($, on) => {
+  const toasts: string[] = []
+  seed(on, skills, [], [], true, { toasts })
+  await $.session.start({ cwd: '/work', surface: 'desktop', isInteractive: true })
+  const ui = await $.ui.mount({ ...PANE, surface: 'desktop' })
+  expect((await ui.find({ key: 'refresh' }))?.text).toBe('↻ Refresh')
+  await ui.press({ key: 'refresh' })
+  expect(toasts.some(t => /^Skills refreshed: \d+ skills \(.+\)\.$/.test(t))).toBe(true)
+  expect((await ui.find({ key: 'refresh' }))?.text).toBe('↻ Refresh') // busy state cleared
+  await ui.unmount()
+})
